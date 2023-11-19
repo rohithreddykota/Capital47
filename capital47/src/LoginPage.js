@@ -10,8 +10,6 @@ function LoginPage() {
     const [password, setPassword] = useState('');
     const [isLoginMode, setLoginMode] = useState(true);
 
-    console.log('I am login')
-
     const history = useNavigate(); // Access the history object
 
     const handleToggleMode = () => {
@@ -20,7 +18,7 @@ function LoginPage() {
 
     const handleNavigation = () => {
         // Assuming you have routes set up for '/currency-sending' in your App component
-        history.push('/currency-sending');
+        history('/currency-sending');
     };
 
     const handleSubmit = (e) => {

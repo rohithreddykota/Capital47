@@ -3,12 +3,11 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LoginPage from './LoginPage';
-
 import CurrencySendingPage from './CurrencySendingPage'; // Import your CurrencySendingPage component
 
 
 function App() {
-  console.log('I am app')
+
 
   return (
     <Router>
@@ -21,8 +20,8 @@ function App() {
 
         <main>
           <Routes>
-            <Route path="/currency-sending" component={CurrencySendingPage} />
-            <Route path="/login" component={LoginPage} />
+            <Route path="/currency-sending" element={<CurrencySendingPage />} />
+            <Route path="/login" element={<LoginPage />} />
             {/* Add more routes as needed */}
           </Routes>
         </main>
@@ -31,6 +30,7 @@ function App() {
           <p>&copy; {new Date().getFullYear()} Capital47</p>
         </footer>
       </div>
+
     </Router>
   );
 }
