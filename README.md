@@ -35,7 +35,7 @@ go run main.go
 ### Frontend
 
 ```bash
-cd frontend
+cd web
 npm install
 npm start
 ```
