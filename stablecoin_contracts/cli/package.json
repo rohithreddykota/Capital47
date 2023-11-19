@@ -1,0 +1,73 @@
+{
+  "name": "@hashgraph/stablecoin-npm-cli",
+  "version": "1.10.0",
+  "description": "CLI for Hedera Stablecoin",
+  "main": "./build/src/index.js",
+  "bin": {
+    "accelerator": "build/src/index.js"
+  },
+  "exports": {
+    ".": "./build/src/index.js"
+  },
+  "files": [
+    "build/"
+  ],
+  "scripts": {
+    "start": "clear && npx tsc && node ./build/src/index.js",
+    "start:wizard": "clear && npx tsc && node ./build/src/index.js wizard -cp './hsca-config.yaml' -n 'testnet'",
+    "clean": "rimraf coverage build tmp",
+    "prebuild": "npm run lint",
+    "postbuild": "cp src/resources/config/.hedera-stable-coin-cli.yaml build/src/resources/config/.hedera-stable-coin-cli.yaml",
+    "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -w -p tsconfig.json",
+    "build:release": "npm run clean && tsc -p tsconfig.release.json",
+    "lint": "eslint --ext .ts --ext .mts .",
+    "test": "npx jest --maxWorkers=50%",
+    "cleanCache": "npx jest --clearCache",
+    "test:ci": "NODE_OPTIONS=--experimental-vm-modules npx jest --ci --json --coverage --forceExit --testLocationInResults --outputFile=report.json",
+    "test:vm": "NODE_OPTIONS=--experimental-vm-modules npm run test",
+    "prettier": "prettier --config .prettierrc --write .",
+    "prettierCheck": "prettier --config .prettierrc --check",
+    "test:watch": "jest --watch",
+    "pre-commit": "npm run lint && npm run prettier",
+    "prepack": "npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/inquirer": "^8.0.0",
+    "@types/jest": "^29.2.6",
+    "@types/node": "^18.11.18",
+    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "@typescript-eslint/parser": "^5.48.2",
+    "eslint": "^8.32.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-jest": "^27.2.1",
+    "jest": "^29.3.1",
+    "prettier": "^2.8.3",
+    "rimraf": "^4.1.1",
+    "ts-jest": "^29.0.5",
+    "tsutils": "~3.21"
+  },
+  "dependencies": {
+    "@iarna/toml": "^2.2.5",
+    "big.js": "^6.2.1",
+    "chalk": "^5.2.0",
+    "cli-table3": "^0.6.2",
+    "colors": "^1.4.0",
+    "commander": "^10.0.0",
+    "figlet-promised": "^1.0.0",
+    "fs-extra": "^11.1.0",
+    "@hashgraph/stablecoin-npm-sdk": "file:./../sdk",
+    "inquirer": "^8.0.0",
+    "js-yaml": "^4.1.0",
+    "lodash": "^4.17.21",
+    "maskdata": "^1.1.10",
+    "ora": "^6.1.2",
+    "shelljs": "^0.8.5",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.4.1",
+    "typescript": "4.9.4"
+  }
+}
