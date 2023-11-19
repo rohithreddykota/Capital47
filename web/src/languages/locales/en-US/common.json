@@ -1,0 +1,20 @@
+{
+  "button": {
+    "confirm": "Confirm"
+  },
+  "youSend": "You send",
+  "recipientGets": "Recipient gets",
+  "delivery": "Delivery",
+  "conversionRate": "Conversion rate",
+  "writeAValue": "0.00",
+  "selects": {
+    "date": {
+      "placeholder": "Choose the date:"
+    },
+    "country": {
+      "placeholder": "Search a country",
+      "from": "From:",
+      "to": "To:"
+    }
+  }
+}
