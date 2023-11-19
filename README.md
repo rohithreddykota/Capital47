@@ -39,7 +39,7 @@ Most importantly, Hedera is carbon-neutral and energy efficient, which is a huge
 
 ### Hedera Stablecoin Demo:
 
-![Hedera Stablecoin Smart Contracts](Hedera.mov)
+[Hedera Stablecoin Smart Contracts](Hedera.mov)
 
 
 ```js
@@ -79,7 +79,7 @@ Most importantly, Hedera is carbon-neutral and energy efficient, which is a huge
 
 ### Application Demo:
 
-![Application Demo](application.mov)
+[Application Demo](application.mov)
 
 
 ## Technologies Used
