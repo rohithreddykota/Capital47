@@ -1,0 +1,46 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+package-lock.json
+
+# Dependencies
+node_modules/
+
+# Coverage
+coverage
+
+# Transpiled files
+build
+
+# VS Code
+.vscode
+!.vscode/tasks.js
+
+# JetBrains IDEs
+.idea/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Misc
+.DS_Store
+
+# Old files
+.old
+
+# history
+.history
+
+# Compile contract
+**/artifacts/
+sdk/hedera-sc-sdk.code-workspace
+cli/hsca-config.yaml
+.env
+contracts/docs/
+contracts/cache/*
+contracts/typechain-types/
+
