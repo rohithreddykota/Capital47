@@ -3,7 +3,7 @@ Cross-Border Payments with Smart Contracts and CaptialOne APIs
 
 ## Background
 
-# Streamlined Cross-Border Transactions with Blockchain and Cryptocurrencies
+## Streamlined Cross-Border Transactions with Blockchain and Cryptocurrencies
 
 ## 1. Traditional Cross-Border Transactions:
    - In traditional financial systems, cross-border transactions involve multiple intermediary banks, currency conversions, and can take several days to complete.
