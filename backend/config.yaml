@@ -1,0 +1,8 @@
+# config.yaml
+
+nessie:
+  api_key: "e157f3ddfb74e929d3bb40ed199ad3ba"
+  base_url: "http://api.nessieisreal.com"
+
+server:
+  port: 8080  # Adjust the port number based on your preference
