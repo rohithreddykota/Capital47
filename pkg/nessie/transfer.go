@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"time"
 )
@@ -16,24 +17,29 @@ const (
 
 // Transfer represents a transfer entity.
 type Transfer struct {
-	ID              string    `json:"_id,omitempty"`
-	Type            string    `json:"type,omitempty"`
-	TransactionDate time.Time `json:"transaction_date,omitempty"`
-	Status          string    `json:"status,omitempty"`
-	Medium          string    `json:"medium,omitempty"`
-	PayerID         string    `json:"payer_id,omitempty"`
-	PayeeID         string    `json:"payee_id,omitempty"`
-	Description     string    `json:"description,omitempty"`
+	ID              string     `json:"_id,omitempty"`
+	Type            string     `json:"type,omitempty"`
+	TransactionDate *time.Time `json:"transaction_date,omitempty"`
+	Status          string     `json:"status,omitempty"`
+	Medium          string     `json:"medium,omitempty"`
+	PayerID         string     `json:"payer_id,omitempty"`
+	PayeeID         string     `json:"payee_id,omitempty"`
+	Description     string     `json:"description,omitempty"`
+	Amount          string     `json:"amount,omitempty"`
 }
 
-// GetAllTransfers retrieves all transfers associated with a specific account.
-func (api *NessieAPI) GetAllTransfers(accountID, transferType string) ([]Transfer, error) {
-	url := fmt.Sprintf("%s/accounts/%s/transfers?key=%s&type=%s", api.BaseURL, accountID, api.APIKey, transferType)
+// UnmarshalJSON parses the JSON-encoded data and stores the result in the value pointed to by t.
 
+/*// GetAllTransfers retrieves all transfers associated with a specific account.
+func (api *NessieAPI) GetAllTransfers(accountID string) ([]Transfer, error) {
+	url := fmt.Sprintf("%s/accounts/%s/transfers?key=%s", api.BaseURL, accountID, api.APIKey)
+
+	fmt.Print(url)
 	resp, err := api.HTTPClient.Get(url)
 	if err != nil {
 		return nil, err
 	}
+
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
@@ -44,6 +50,42 @@ func (api *NessieAPI) GetAllTransfers(accountID, transferType string) ([]Transfe
 	if err := json.NewDecoder(resp.Body).Decode(&transfers); err != nil {
 		return nil, err
 	}
+	fmt.Print(&transfers)
+
+	return transfers, nil
+}*/
+
+// GetAllTransfers retrieves all transfers associated with a specific account.
+func (api *NessieAPI) GetAllTransfers(accountID string) ([]Transfer, error) {
+	url := fmt.Sprintf("%s/accounts/%s/transfers?key=%s", api.BaseURL, accountID, api.APIKey)
+
+	resp, err := api.HTTPClient.Get(url)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("failed to get transfers: %s", resp.Status)
+	}
+
+	// Read the response body into a variable
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	// Modify the time in the response body
+	// For example, you can replace "2023-11-19" with "2023-11-19T00:00:00Z"
+	body = bytes.ReplaceAll(body, []byte(`"transaction_date":"2023-11-19"`), []byte(`"transaction_date":"2023-11-19T00:00:00Z"`))
+
+	var transfers []Transfer
+
+	// Decode the modified response body
+	if err := json.Unmarshal(body, &transfers); err != nil {
+		return nil, err
+	}
 
 	return transfers, nil
 }
@@ -52,6 +94,7 @@ func (api *NessieAPI) GetAllTransfers(accountID, transferType string) ([]Transfe
 func (api *NessieAPI) GetTransferByID(transferID string) (*Transfer, error) {
 	url := fmt.Sprintf("%s/transfers/%s?key=%s", api.BaseURL, transferID, api.APIKey)
 
+	fmt.Print(url)
 	resp, err := api.HTTPClient.Get(url)
 	if err != nil {
 		return nil, err
@@ -62,8 +105,20 @@ func (api *NessieAPI) GetTransferByID(transferID string) (*Transfer, error) {
 		return nil, fmt.Errorf("failed to get transfer: %s", resp.Status)
 	}
 
+	// Read the response body into a variable
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	// Modify the time in the response body
+	// For example, you can replace "2023-11-19" with "2023-11-19T00:00:00Z"
+	body = bytes.ReplaceAll(body, []byte(`"transaction_date":"2023-11-19"`), []byte(`"transaction_date":"2023-11-19T00:00:00Z"`))
+
 	var transfer Transfer
-	if err := json.NewDecoder(resp.Body).Decode(&transfer); err != nil {
+
+	// Decode the modified response body
+	if err := json.Unmarshal(body, &transfer); err != nil {
 		return nil, err
 	}
 
@@ -74,6 +129,8 @@ func (api *NessieAPI) GetTransferByID(transferID string) (*Transfer, error) {
 func (api *NessieAPI) CreateTransfer(accountID string, transfer *Transfer) (*Transfer, error) {
 	url := fmt.Sprintf("%s/accounts/%s/transfers?key=%s", api.BaseURL, accountID, api.APIKey)
 
+	fmt.Print(transfer)
+	// Marshal the transfer object to JSON
 	body, err := json.Marshal(transfer)
 	if err != nil {
 		return nil, err
@@ -83,14 +140,27 @@ func (api *NessieAPI) CreateTransfer(accountID string, transfer *Transfer) (*Tra
 	if err != nil {
 		return nil, err
 	}
+	print(resp.Body)
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusCreated {
 		return nil, fmt.Errorf("failed to create transfer: %s", resp.Status)
 	}
 
+	// Read the response body into a variable
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	// Modify the time in the response body
+	// For example, you can replace "2023-11-19" with "2023-11-19T00:00:00Z"
+	respBody = bytes.ReplaceAll(respBody, []byte(`"transaction_date":"2023-11-19"`), []byte(`"transaction_date":"2023-11-19T00:00:00Z"`))
+
 	var createdTransfer Transfer
-	if err := json.NewDecoder(resp.Body).Decode(&createdTransfer); err != nil {
+
+	// Decode the modified response body
+	if err := json.Unmarshal(respBody, &createdTransfer); err != nil {
 		return nil, err
 	}
 

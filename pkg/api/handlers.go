@@ -2,9 +2,11 @@ package api
 
 import (
 	"Capital47/pkg/nessie"
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -952,16 +954,70 @@ func DeletePurchase(w http.ResponseWriter, r *http.Request) {
 }
 */
 
-// CreateTransferHandler creates a new transfer.
+// GetAllTransfersHandler retrieves all transfers associated with a specific account.
+func GetAllTransfersHandler(api *nessie.NessieAPI) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+
+		accountID := vars["id"]
+
+		// Use the NessieAPI to get all transfers
+		transfers, err := api.GetAllTransfers(accountID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Convert the transfers to JSON and send the response
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(transfers)
+	}
+}
+
+// GetTransferByIDHandler retrieves a transfer by its ID.
+func GetTransferByIDHandler(api *nessie.NessieAPI) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// Extract transfer ID from the request parameters
+		vars := mux.Vars(r)
+		transferID := vars["id"]
+
+		fmt.Print(transferID)
+		// Use the NessieAPI to get the transfer by ID
+		transfer, err := api.GetTransferByID(transferID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Convert the transfer to JSON and send the response
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(transfer)
+	}
+}
+
 func CreateTransferHandler(api *nessie.NessieAPI) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Extract account ID from the request parameters
 		vars := mux.Vars(r)
-		accountID := vars["accountID"]
+		accountID := vars["id"]
 
-		// Decode the request body into a Transfer struct
+		// Read the raw JSON from the request body
+		body, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		// Modify the time format in the raw JSON
+		body = modifyTimeFormat(body)
+		fmt.Print(body)
+
+		// Create a new buffer with the modified JSON
+		modifiedBody := bytes.NewBuffer(body)
+
+		// Decode the modified request body into a Transfer struct
 		var newTransfer nessie.Transfer
-		err := json.NewDecoder(r.Body).Decode(&newTransfer)
+		err = json.NewDecoder(modifiedBody).Decode(&newTransfer)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
@@ -974,10 +1030,18 @@ func CreateTransferHandler(api *nessie.NessieAPI) http.HandlerFunc {
 			return
 		}
 
+		fmt.Print(createdTransfer)
 		// Convert the created transfer to JSON and send the response
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(createdTransfer)
 	}
+}
+
+// Function to modify the time format in the raw JSON
+func modifyTimeFormat(jsonData []byte) []byte {
+	// Modify the time format in the JSON as needed
+	// For example, replace "2023-11-19" with "2023-11-19T00:00:00Z"
+	return bytes.ReplaceAll(jsonData, []byte(`"transaction_date":"2023-11-19"`), []byte(`"transaction_date":"2023-11-19T00:00:00Z"`))
 }
 
 // UpdateTransferHandler updates an existing transfer.
