@@ -37,7 +37,50 @@ Most importantly, Hedera is carbon-neutral and energy efficient, which is a huge
 
 ## Demo
 
-<!-- todo -->
+### Hedera Stablecoin Demo:
+
+![Hedera Stablecoin Smart Contracts](Hedera.mov)
+
+
+```js
+{
+  hederaTokenManager: '0.0.636684',
+  name: 'C47Coin',
+  symbol: 'C47',
+  decimals: 6,
+  initialSupply: undefined,
+  supplyType: 'INFINITE',
+  maxSupply: undefined,
+  freezeKey: 'The Smart Contract',
+  KYCKey: PublicKey {
+    key: '08dda86fcdfd86ce467c517ed25175544b9e6b58bca319395fdb4f9cd0dce1b9',
+    type: 'ED25519'
+  },
+  wipeKey: 'The Smart Contract',
+  adminKey: 'The Smart Contract',
+  supplyKey: 'The Smart Contract',
+  pauseKey: 'The Smart Contract',
+  feeScheduleKey: 'None',
+  treasury: 'The Smart Contract',
+  reserve: 'Proof of Reserve Feed initial amount : 1000',
+  burnRole: '0.0.5904865',
+  wipeRole: '0.0.5904865',
+  rescueRole: '0.0.5904865',
+  pauseRole: '0.0.5904865',
+  freezeRole: '0.0.5904865',
+  deleteRole: '0.0.5904865',
+  kycRole: undefined,
+  cashinRole: '0.0.5904865',
+  cashinAllowance: '0',
+  metadata: undefined,
+  proxyAdminOwnerAccount: '0.0.5904865'
+}
+```
+
+### Application Demo:
+
+![Application Demo](application.mov)
+
 
 ## Technologies Used
 
