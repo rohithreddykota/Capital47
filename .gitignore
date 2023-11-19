@@ -13,6 +13,7 @@
 
 # Ignore package manager directories
 node_modules/
+build/
 packages/
 # Ignore JS and TS build output
 *.js
