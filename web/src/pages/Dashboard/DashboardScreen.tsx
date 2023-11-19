@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import moment from 'moment';
+import axios from 'axios';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Country, DashboardState } from '../../store/modules/dashboard/types';
@@ -18,13 +19,8 @@ import Dashboard from './Layout/Dashboard.layout';
 const DashboardScreen: React.FC = () => {
   const dispatch = useDispatch();
 
-  const {
-    youSend,
-    recipientGets,
-    fromCountry,
-    toCountry,
-    typeDelivery,
-  } = useSelector((state: { dashboard: DashboardState }) => state.dashboard);
+  const { youSend, recipientGets, fromCountry, toCountry, typeDelivery } =
+    useSelector((state: { dashboard: DashboardState }) => state.dashboard);
 
   useEffect(() => {
     setTimeout(() => {
@@ -45,43 +41,50 @@ const DashboardScreen: React.FC = () => {
 
       dispatch(updateToCountry(country));
     },
-    [dispatch],
+    [dispatch]
   );
 
   const handleChangeYouSend = useCallback(
     (value: string | number) => {
       dispatch(updateYouSend(Number(value)));
     },
-    [dispatch],
+    [dispatch]
   );
 
   const handleUpdateDateCalendar = useCallback(
     (date: string, delivery: string) => {
       dispatch(updateDeliveryDate(date, delivery));
     },
-    [dispatch],
+    [dispatch]
   );
 
   const handleClickReverseCurrency = useCallback(
     (from: Country, to: Country) => {
       dispatch(reverseCurrency(from, to));
     },
-    [dispatch],
+    [dispatch]
   );
 
   const handleSubmitConfirm = useCallback(() => {
-    const payload = `
-      {
-        sentAt: ${moment().format()},
-        plan: ${typeDelivery},
-        sent: ${youSend},
-        received: ${recipientGets},
-        from: ${fromCountry.value},
-        to: ${toCountry.value},
-      }
-    `;
-
-    alert(payload);
+    const payload = {
+      medium: 'balance',
+      payee_id: '65599a9f9683f20dd5188a43',
+      transaction_date: '2023-11-19',
+      status: 'pending',
+      description: 'Sending money to my friend',
+      amount: youSend,
+    };
+    axios
+      .post(
+        'http://api.nessieisreal.com/accounts/65599bf59683f20dd5188a44/transfers?key=e157f3ddfb74e929d3bb40ed199ad3ba',
+        payload
+      )
+      .then((response) => {
+        alert(`response.data.message. Transfered: ${youSend}`);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   }, [youSend, recipientGets, fromCountry, toCountry, typeDelivery]);
 
   return (
