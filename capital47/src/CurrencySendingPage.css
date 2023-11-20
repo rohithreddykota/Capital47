@@ -1,0 +1,56 @@
+/* Update class names to avoid conflicts */
+
+.currency-sending-container {
+    font-family: Arial, sans-serif;
+    margin: 10px;
+}
+
+.currency-sending-form {
+    max-width: 300px;
+    margin: auto;
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+}
+
+.currency-sending-title {
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    text-align: center;
+    color: rgb(70, 130, 234);
+    margin-bottom: 8px;
+
+}
+
+.currency-sending-label {
+    display: block;
+    margin-bottom: 4px;
+    color: #333;
+    margin-top: 15%;
+}
+
+.currency-sending-input,
+.currency-sending-select {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: -90px;
+}
+
+.currency-sending-button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 10%;
+    width: 100%;
+}
+
+.currency-sending-button:hover {
+    background-color: #45a049;
+}
